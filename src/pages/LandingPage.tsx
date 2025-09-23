@@ -55,7 +55,7 @@ const LandingPage = () => {
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroBg})` }}
+          style={{ backgroundImage: `url(taj2.jpg)` }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30" />
         
