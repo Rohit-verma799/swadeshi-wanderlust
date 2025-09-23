@@ -84,7 +84,7 @@ const Footer = () => {
 
         <div className="border-t border-secondary-foreground/20 mt-8 pt-8 text-center">
           <p className="text-sm text-secondary-foreground/80">
-            © 2024 Swadeshi Travel. All rights reserved. Made with ❤️ for incredible India.
+            © 2025 Swadeshi Travel. All rights reserved. Made with ❤️ for incredible India By Team ANR.
           </p>
         </div>
       </div>
