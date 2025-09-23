@@ -5,15 +5,16 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Calendar, Clock, Hotel, Car, Filter, Search, Star, BookOpen } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
+import { MapPin, Calendar, Clock, Hotel, Car, Filter, Search, Star, BookOpen, Info } from 'lucide-react';
 import { sampleItineraries, Itinerary, Hotel as HotelType, Place } from '@/data/itineraries';
-import BookingModal from '@/components/BookingModal';
+import PlaceDetailModal from '@/components/PlaceDetailModal';
 
 const ItineraryPage = () => {
   const [formData, setFormData] = useState({
     destination: '',
     days: '',
-    budget: ''
+    budget: 20000 // Default budget value
   });
   const [generatedItinerary, setGeneratedItinerary] = useState<Itinerary | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +23,7 @@ const ItineraryPage = () => {
     hotelType: 'all',
     searchTerm: ''
   });
-  const [bookingModal, setBookingModal] = useState<{
+  const [detailModal, setDetailModal] = useState<{
     isOpen: boolean;
     item: HotelType | Place | null;
     type: 'hotel' | 'place';
@@ -44,7 +45,7 @@ const ItineraryPage = () => {
     setTimeout(() => {
       const destinationItineraries = sampleItineraries[formData.destination] || [];
       const matchingItinerary = destinationItineraries.find(
-        itinerary => itinerary.budget === formData.budget
+        itinerary => Math.abs(itinerary.budget - formData.budget) <= 10000
       ) || destinationItineraries[0];
       
       if (matchingItinerary) {
@@ -61,15 +62,18 @@ const ItineraryPage = () => {
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData(prev => ({ 
+      ...prev, 
+      [field]: field === 'budget' ? parseInt(value) : value 
+    }));
   };
 
   const handleFilterChange = (field: string, value: string) => {
     setFilters(prev => ({ ...prev, [field]: value }));
   };
 
-  const openBookingModal = (item: HotelType | Place, type: 'hotel' | 'place') => {
-    setBookingModal({ isOpen: true, item, type });
+  const openDetailModal = (item: HotelType | Place, type: 'hotel' | 'place') => {
+    setDetailModal({ isOpen: true, item, type });
   };
 
   const filteredItinerary = generatedItinerary ? {
@@ -125,32 +129,42 @@ const ItineraryPage = () => {
                 </Select>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="days">Number of Days</Label>
-                <Input
-                  id="days"
-                  type="number"
-                  min="1"
-                  max="30"
-                  placeholder="Enter number of days"
-                  value={formData.days}
-                  onChange={(e) => handleInputChange('days', e.target.value)}
-                />
-              </div>
+                <div className="space-y-2">
+                  <Label htmlFor="days">Number of Days (1-15)</Label>
+                  <Input
+                    id="days"
+                    type="number"
+                    min="1"
+                    max="15"
+                    placeholder="Enter number of days"
+                    value={formData.days}
+                    onChange={(e) => handleInputChange('days', e.target.value)}
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="budget">Budget Range</Label>
-                <Select onValueChange={(value) => handleInputChange('budget', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select your budget" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Low">Low (₹5,000 - ₹15,000)</SelectItem>
-                    <SelectItem value="Medium">Medium (₹15,000 - ₹35,000)</SelectItem>
-                    <SelectItem value="High">High (₹35,000+)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                <div className="space-y-4">
+                  <Label htmlFor="budget">Budget Range: ₹{formData.budget.toLocaleString()}</Label>
+                  <div className="px-3">
+                    <Slider
+                      value={[formData.budget]}
+                      onValueChange={(value) => handleInputChange('budget', value[0].toString())}
+                      max={50000}
+                      min={5000}
+                      step={2500}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                      <span>₹5,000</span>
+                      <span>₹25,000</span>
+                      <span>₹50,000</span>
+                    </div>
+                  </div>
+                  <div className="text-sm text-muted-foreground text-center">
+                    {formData.budget <= 15000 ? '🏖️ Budget Travel' : 
+                     formData.budget <= 30000 ? '🏨 Comfortable Stay' : 
+                     '👑 Luxury Experience'}
+                  </div>
+                </div>
 
               <Button 
                 type="submit" 
@@ -254,7 +268,8 @@ const ItineraryPage = () => {
 
             <div className="grid gap-6">
               {filteredItinerary.itinerary.map((day, index) => (
-                <Card key={index} className="hover:shadow-card transition-shadow bg-gradient-card">
+                <Card key={index} className="hover:shadow-card transition-all duration-500 bg-gradient-card animate-fade-in hover-scale" 
+                      style={{ animationDelay: `${index * 100}ms` }}>
                   <CardHeader>
                     <div className="flex items-center space-x-3">
                       <div className="w-12 h-12 bg-gradient-hero rounded-full flex items-center justify-center">
@@ -275,15 +290,22 @@ const ItineraryPage = () => {
                       </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                         {day.places.map((place, idx) => (
-                          <Card key={idx} className="p-3 hover:shadow-md transition-shadow cursor-pointer"
-                                onClick={() => openBookingModal(place, 'place')}>
+                          <Card key={idx} className="p-3 hover:shadow-card transition-all duration-300 cursor-pointer hover-scale animate-fade-in"
+                                onClick={() => openDetailModal(place, 'place')}>
                             <div className="flex space-x-3">
-                              <img src={place.image} alt={place.name} className="w-12 h-12 object-cover rounded" />
+                              <img src={place.image} alt={place.name} className="w-16 h-16 object-cover rounded-lg shadow-soft" />
                               <div className="flex-1 min-w-0">
                                 <p className="font-medium text-sm truncate">{place.name}</p>
-                                <Badge variant="outline" className="text-xs mt-1">{place.type}</Badge>
+                                <p className="text-xs text-muted-foreground truncate mb-1">{place.description}</p>
+                                <div className="flex items-center justify-between">
+                                  <Badge variant="outline" className="text-xs">{place.type}</Badge>
+                                  <div className="flex items-center text-xs text-muted-foreground">
+                                    <Clock className="w-3 h-3 mr-1" />
+                                    {place.duration}
+                                  </div>
+                                </div>
                               </div>
-                              <BookOpen className="w-4 h-4 text-primary mt-1" />
+                              <Info className="w-4 h-4 text-primary mt-1" />
                             </div>
                           </Card>
                         ))}
@@ -298,12 +320,13 @@ const ItineraryPage = () => {
                       </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {day.hotels.map((hotel, idx) => (
-                          <Card key={idx} className="p-3 hover:shadow-md transition-shadow cursor-pointer"
-                                onClick={() => openBookingModal(hotel, 'hotel')}>
+                          <Card key={idx} className="p-3 hover:shadow-card transition-all duration-300 cursor-pointer hover-scale animate-fade-in"
+                                onClick={() => openDetailModal(hotel, 'hotel')}>
                             <div className="flex space-x-3">
-                              <img src={hotel.image} alt={hotel.name} className="w-12 h-12 object-cover rounded" />
+                              <img src={hotel.image} alt={hotel.name} className="w-16 h-16 object-cover rounded-lg shadow-soft" />
                               <div className="flex-1 min-w-0">
                                 <p className="font-medium text-sm truncate">{hotel.name}</p>
+                                <p className="text-xs text-muted-foreground truncate mb-1">{hotel.description}</p>
                                 <div className="flex items-center space-x-2 mt-1">
                                   <div className="flex items-center">
                                     <Star className="w-3 h-3 text-yellow-500 fill-current" />
@@ -312,8 +335,20 @@ const ItineraryPage = () => {
                                   <Badge variant="outline" className="text-xs">{hotel.type}</Badge>
                                 </div>
                                 <p className="text-xs text-primary font-medium mt-1">{hotel.price}</p>
+                                <div className="flex flex-wrap gap-1 mt-1">
+                                  {hotel.amenities.slice(0, 2).map((amenity, i) => (
+                                    <Badge key={i} variant="secondary" className="text-xs px-1 py-0">
+                                      {amenity}
+                                    </Badge>
+                                  ))}
+                                  {hotel.amenities.length > 2 && (
+                                    <Badge variant="secondary" className="text-xs px-1 py-0">
+                                      +{hotel.amenities.length - 2}
+                                    </Badge>
+                                  )}
+                                </div>
                               </div>
-                              <BookOpen className="w-4 h-4 text-accent mt-1" />
+                              <Info className="w-4 h-4 text-accent mt-1" />
                             </div>
                           </Card>
                         ))}
@@ -356,12 +391,12 @@ const ItineraryPage = () => {
           </div>
         )}
 
-        {/* Booking Modal */}
-        <BookingModal
-          isOpen={bookingModal.isOpen}
-          onClose={() => setBookingModal({ isOpen: false, item: null, type: 'hotel' })}
-          item={bookingModal.item}
-          type={bookingModal.type}
+        {/* Detail Modal */}
+        <PlaceDetailModal
+          isOpen={detailModal.isOpen}
+          onClose={() => setDetailModal({ isOpen: false, item: null, type: 'hotel' })}
+          item={detailModal.item}
+          type={detailModal.type}
           destination={generatedItinerary?.destination || ''}
         />
       </div>
