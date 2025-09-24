@@ -40,6 +40,7 @@ const ItineraryPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [maxDaysAllowed, setMaxDaysAllowed] = useState(15)
   const [showBudgetAnimation, setShowBudgetAnimation] = useState(false)
+  const [showBooking, setShowBooking] = useState(false)
   const [detailModal, setDetailModal] = useState<{
     isOpen: boolean
     item: Place | null
@@ -81,9 +82,18 @@ const ItineraryPage = () => {
 
     setTimeout(() => {
       const destinationItineraries = sampleItineraries[formData.destination] || []
-      const matchingItinerary =
-        destinationItineraries.find((itinerary) => Math.abs(itinerary.budget - formData.budget) <= 10000) ||
-        destinationItineraries[0]
+      
+      // Convert budget to category for matching
+      const getBudgetCategory = (budget: number) => {
+        if (budget <= 15000) return "Low";
+        if (budget <= 30000) return "Mid";
+        return "Luxury";
+      };
+      
+      const budgetCategory = getBudgetCategory(formData.budget);
+      const matchingItinerary = destinationItineraries.find(
+        (itinerary) => itinerary.budget === budgetCategory
+      ) || destinationItineraries[0];
 
       if (matchingItinerary) {
         const selectedDays = Number.parseInt(formData.days)

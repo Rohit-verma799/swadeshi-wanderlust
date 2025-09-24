@@ -1,22 +1,6 @@
 import React, { useState } from 'react';
 import { Plane, Bus, Train, ArrowRight, User, Calendar, CreditCard, CheckCircle, Loader2, ArrowLeft } from 'lucide-react';
 
-// --- MOCK DATA FOR A SINGLE ROUTE (DELHI -> MUMBAI) ---
-const mockApiData = {
-  flights: [
-    { id: 'FL101', brand: 'IndiGo', logoUrl: 'https://placehold.co/100x40/6E3A8A/FFFFFF?text=IndiGo', from: 'DEL', to: 'BOM', departureTime: '08:30', arrivalTime: '10:45', duration: '2h 15m', price: 4500, type: 'flight' },
-    { id: 'FL102', brand: 'Vistara', logoUrl: 'https://placehold.co/100x40/000080/FFFFFF?text=Vistara', from: 'DEL', to: 'BOM', departureTime: '11:00', arrivalTime: '13:05', duration: '2h 05m', price: 5200, type: 'flight' },
-  ],
-  buses: [
-    { id: 'BS201', brand: 'Orange Travels', logoUrl: 'https://placehold.co/100x40/FF5722/FFFFFF?text=Orange', from: 'DEL', to: 'BOM', departureTime: '18:00', arrivalTime: '12:30', duration: '18h 30m', price: 2100, type: 'bus' },
-    { id: 'BS202', brand: 'InterCity', logoUrl: 'https://placehold.co/100x40/4CAF50/FFFFFF?text=InterCity', from: 'DEL', to: 'BOM', departureTime: '19:30', arrivalTime: '14:00', duration: '18h 30m', price: 2450, type: 'bus' },
-  ],
-  trains: [
-    { id: 'TR301', brand: 'Rajdhani Exp', logoUrl: 'https://placehold.co/100x40/8B0000/FFFFFF?text=Rajdhani', from: 'DEL', to: 'BOM', departureTime: '16:55', arrivalTime: '08:15', duration: '15h 20m', price: 3200, type: 'train' },
-    { id: 'TR302', brand: 'Duronto Exp', logoUrl: 'https://placehold.co/100x40/00008B/FFFFFF?text=Duronto', from: 'DEL', to: 'BOM', departureTime: '23:25', arrivalTime: '15:50', duration: '16h 25m', price: 2950, type: 'train' },
-  ],
-};
-
 // --- TYPESCRIPT INTERFACES ---
 interface Ticket {
   id: string;
@@ -30,6 +14,22 @@ interface Ticket {
   price: number;
   type: 'flight' | 'bus' | 'train';
 }
+
+// --- MOCK DATA FOR A SINGLE ROUTE (DELHI -> MUMBAI) ---
+const mockApiData: Record<string, Ticket[]> = {
+  flights: [
+    { id: 'FL101', brand: 'IndiGo', logoUrl: 'https://placehold.co/100x40/6E3A8A/FFFFFF?text=IndiGo', from: 'DEL', to: 'BOM', departureTime: '08:30', arrivalTime: '10:45', duration: '2h 15m', price: 4500, type: 'flight' as const },
+    { id: 'FL102', brand: 'Vistara', logoUrl: 'https://placehold.co/100x40/000080/FFFFFF?text=Vistara', from: 'DEL', to: 'BOM', departureTime: '11:00', arrivalTime: '13:05', duration: '2h 05m', price: 5200, type: 'flight' as const },
+  ],
+  buses: [
+    { id: 'BS201', brand: 'Orange Travels', logoUrl: 'https://placehold.co/100x40/FF5722/FFFFFF?text=Orange', from: 'DEL', to: 'BOM', departureTime: '18:00', arrivalTime: '12:30', duration: '18h 30m', price: 2100, type: 'bus' as const },
+    { id: 'BS202', brand: 'InterCity', logoUrl: 'https://placehold.co/100x40/4CAF50/FFFFFF?text=InterCity', from: 'DEL', to: 'BOM', departureTime: '19:30', arrivalTime: '14:00', duration: '18h 30m', price: 2450, type: 'bus' as const },
+  ],
+  trains: [
+    { id: 'TR301', brand: 'Rajdhani Exp', logoUrl: 'https://placehold.co/100x40/8B0000/FFFFFF?text=Rajdhani', from: 'DEL', to: 'BOM', departureTime: '16:55', arrivalTime: '08:15', duration: '15h 20m', price: 3200, type: 'train' as const },
+    { id: 'TR302', brand: 'Duronto Exp', logoUrl: 'https://placehold.co/100x40/00008B/FFFFFF?text=Duronto', from: 'DEL', to: 'BOM', departureTime: '23:25', arrivalTime: '15:50', duration: '16h 25m', price: 2950, type: 'train' as const },
+  ],
+};
 
 // --- MAIN COMPONENT ---
 const TicketBookingPage: React.FC = () => {
