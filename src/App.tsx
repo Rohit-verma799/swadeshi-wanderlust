@@ -11,13 +11,9 @@ import ItineraryPage from "./pages/ItineraryPage";
 import BusinessPage from "./pages/BusinessPage";
 import BookingPage from "./pages/BookingPage";
 import NotFound from "./pages/NotFound";
-<<<<<<< HEAD
-import ExploreNow from "./components/ExploreNow";
-=======
 import RoadMap from "./pages/roadMap";
 import Ticket from "./pages/Ticket";
 import DetailedItinerary from "./pages/DetailedItinerary";
->>>>>>> e8068c9f20352b3bae72eebde11987a775282821
 
 const queryClient = new QueryClient();
 
@@ -32,12 +28,8 @@ const App = () => (
           <main className="flex-1">
             <Routes>
               <Route path="/" element={<LandingPage />} />
-<<<<<<< HEAD
-              <Route path="/ExploreNow" element={<ExploreNow />} />
-=======
               <Route path="/roadmap" element={<RoadMap />} />
               <Route path="/ticket" element={<Ticket />} />
->>>>>>> e8068c9f20352b3bae72eebde11987a775282821
               <Route path="/itinerary" element={<ItineraryPage />} />
               <Route path="/detailed-itinerary/:destination/:budget/:days" element={<DetailedItinerary />} />
               <Route path="/businesses" element={<BusinessPage />} />
