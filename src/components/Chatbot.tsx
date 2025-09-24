@@ -14,7 +14,7 @@ interface Message {
 
 // --- DANGEROUS: Do NOT do this in a public website ---
 // Your API key is exposed to anyone visiting your site.
-const API_KEY = "AIzaSyAlco9tUsLDGbly-NYNM8P4GxyTZKj8jC8"; 
+const API_KEY = "AIzGblyjC8"; 
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
