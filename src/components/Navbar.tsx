@@ -12,7 +12,6 @@ const Navbar = () => {
     { name: 'Itinerary', path: '/itinerary' },
     { name: 'Businesses', path: '/businesses' },
     { name: 'Bookings', path: '/booking' },
-    { name: 'Ticket', path: '/ticket' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -46,11 +45,9 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
-            <a href="/roadmap">
             <Button variant="default" size="sm" className="shadow-soft">
-             Future RoadMap
+              Get Started
             </Button>
-            </a>
           </div>
 
           {/* Mobile menu button */}
@@ -83,11 +80,9 @@ const Navbar = () => {
                   {item.name}
                 </Link>
               ))}
-              <a href="roadmap">
-              <Button variant="default" size="sm" className="mt-2 shadow-soft w-full">
-                Future RoadMap
+              <Button variant="default" size="sm" className="mt-2 shadow-soft">
+                Get Started
               </Button>
-              </a>
             </div>
           </div>
         )}

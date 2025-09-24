@@ -14,10 +14,12 @@ const BusinessCard = ({ business }: BusinessCardProps) => {
     switch (category) {
       case 'hotel':
         return 'bg-primary/10 text-primary';
+      case 'homestay':
+        return 'bg-accent/10 text-accent-foreground';
       case 'restaurant':
         return 'bg-secondary/10 text-secondary';
-      case 'shop':
-        return 'bg-accent/10 text-accent-foreground';
+      case 'artisan':
+        return 'bg-gradient-accent text-accent-foreground';
       default:
         return 'bg-muted text-muted-foreground';
     }
@@ -43,7 +45,7 @@ const BusinessCard = ({ business }: BusinessCardProps) => {
           </div>
         </div>
       </CardHeader>
-
+      
       <CardContent className="p-4">
         <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
           {business.name}
@@ -68,22 +70,16 @@ const BusinessCard = ({ business }: BusinessCardProps) => {
           )}
         </div>
       </CardContent>
-
-      <CardFooter className="p-4 pt-0 flex items-center justify-end">
-        {business.category === 'restaurant' ? (
+      
+      <CardFooter className="p-4 pt-0 flex items-center justify-between">
+        <div className="text-lg font-bold text-primary">
+          {business.price}
+        </div>
+        <Link to="/booking" state={{ business }}>
           <Button className="shadow-soft hover:shadow-card transition-shadow">
-            Explore Now
+            Book Now
           </Button>
-        ) : (
-          <>
-            <div className="text-lg font-bold text-primary">{business.price}</div>
-            <Link to="/booking" state={{ business }}>
-              <Button className="ml-2 shadow-soft hover:shadow-card transition-shadow">
-                Book Now
-              </Button>
-            </Link>
-          </>
-        )}
+        </Link>
       </CardFooter>
     </Card>
   );

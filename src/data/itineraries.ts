@@ -1,157 +1,124 @@
-// Types and interfaces
-export interface Place {
-  name: string;
-  description: string;
-  image: string;
-  rating: number;
-  type: string;
-  duration?: string;
-}
-
-export interface Hotel {
-  name: string;
-  description: string;
-  image: string;
-  rating: number;
-  price: string;
-  type?: string;
-  amenities?: string[];
-}
-
-interface Day {
+export interface ItineraryDay {
   day: number;
   title: string;
-  places: Place[];
-  hotels: Hotel[];
+  places: string[];
+  hotels: string[];
   description: string;
   activities: string[];
 }
 
-interface Itinerary {
+export interface Itinerary {
   destination: string;
   days: number;
   budget: string;
-  itinerary: Day[];
+  itinerary: ItineraryDay[];
 }
 
-export const itinerariesData: Record<string, Itinerary[]> = {
+export const sampleItineraries: Record<string, Itinerary[]> = {
   "Rajasthan": [
     {
       destination: "Rajasthan",
-      days: 6,
-      budget: "Low",
+      days: 5,
+      budget: "Medium",
       itinerary: [
         {
           day: 1,
-          title: "Arrival in Jaipur - Pink City Welcome",
-          places: [
-            {
-              name: "City Palace",
-              description: "Royal palace complex with museums and courtyards",
-              image: "/taj.jpg",
-              rating: 4.5,
-              type: "Palace",
-              duration: "2-3 hours"
-            },
-            {
-              name: "Hawa Mahal",
-              description: "Iconic Palace of Winds with intricate facade",
-              image: "/taj2.jpg",
-              rating: 4.3,
-              type: "Heritage",
-              duration: "1 hour"
-            }
-          ],
-          hotels: [
-            {
-              name: "Hotel Pearl Palace",
-              description: "Heritage hotel with traditional Rajasthani architecture",
-              image: "/taj.jpg",
-              rating: 4.0,
-              price: "₹2500/night",
-              type: "Heritage Hotel",
-              amenities: ["WiFi", "Restaurant", "AC", "Room Service"]
-            },
-            {
-              name: "Zostel Jaipur",
-              description: "Modern hostel with backpacker-friendly amenities",
-              image: "/taj2.jpg",
-              rating: 4.2,
-              price: "₹800/night",
-              type: "Hostel",
-              amenities: ["WiFi", "Common Area", "Kitchen", "Laundry"]
-            }
-          ],
-          description: "Begin your Rajasthan adventure in the Pink City of Jaipur.",
-          activities: ["Palace tour", "Market exploration", "Local cuisine tasting"]
+          title: "Arrival in Jaipur - The Pink City",
+          places: ["Hawa Mahal", "City Palace", "Jantar Mantar"],
+          hotels: ["Hotel Pearl Palace", "Rambagh Palace"],
+          description: "Explore the magnificent Pink City with its royal heritage and stunning architecture.",
+          activities: ["Palace tour", "Local market shopping", "Traditional Rajasthani dinner"]
         },
         {
           day: 2,
-          title: "Amber Fort and Jaipur Heritage",
-          places: [
-            {
-              name: "Amber Fort",
-              description: "Majestic hilltop fort with stunning architecture",
-              image: "/taj.jpg",
-              rating: 4.6,
-              type: "Fort",
-              duration: "3-4 hours"
-            }
-          ],
-          hotels: [
-            {
-              name: "Hotel Pearl Palace",
-              description: "Heritage hotel with traditional Rajasthani architecture",
-              image: "/taj.jpg",
-              rating: 4.0,
-              price: "₹2500/night",
-              type: "Heritage Hotel",
-              amenities: ["WiFi", "Restaurant", "AC", "Room Service"]
-            }
-          ],
-          description: "Explore the magnificent Amber Fort and surrounding heritage sites.",
-          activities: ["Fort exploration", "Elephant ride", "Photography"]
+          title: "Jaipur Sightseeing",
+          places: ["Amber Fort", "Jal Mahal", "Nahargarh Fort"],
+          hotels: ["Hotel Pearl Palace", "Rambagh Palace"],
+          description: "Visit the majestic forts and experience the royal grandeur of Rajasthan.",
+          activities: ["Elephant ride", "Fort exploration", "Sunset viewing"]
         },
         {
           day: 3,
-          title: "Journey to Pushkar - Sacred City",
-          places: [
-            {
-              name: "Pushkar Lake",
-              description: "Sacred lake surrounded by 52 ghats",
-              image: "/taj.jpg",
-              rating: 4.4,
-              type: "Religious",
-              duration: "1-2 hours"
-            },
-            {
-              name: "Brahma Temple",
-              description: "Rare temple dedicated to Lord Brahma",
-              image: "/taj2.jpg",
-              rating: 4.2,
-              type: "Temple",
-              duration: "1 hour"
-            }
-          ],
-          hotels: [
-            {
-              name: "Zostel Pushkar",
-              description: "Vibrant hostel in the heart of Pushkar",
-              image: "/taj.jpg",
-              rating: 4.1,
-              price: "₹600/night",
-              type: "Hostel",
-              amenities: ["WiFi", "Common Area", "Kitchen", "Rooftop"]
-            }
-          ],
-          description: "Experience the spiritual ambiance of the holy city of Pushkar.",
-          activities: ["Temple visit", "Lake aarti", "Camel safari"]
+          title: "Journey to Jodhpur - The Blue City",
+          places: ["Mehrangarh Fort", "Jaswant Thada", "Clock Tower Market"],
+          hotels: ["Ajit Bhawan", "Umaid Bhawan Palace"],
+          description: "Travel to the Blue City and explore its magnificent fort and vibrant markets.",
+          activities: ["Fort museum visit", "Local handicraft shopping", "Blue city walk"]
+        },
+        {
+          day: 4,
+          title: "Jodhpur to Udaipur - City of Lakes",
+          places: ["City Palace Udaipur", "Lake Pichola", "Jag Mandir"],
+          hotels: ["Hotel Udaivilas", "Shiv Niwas Palace"],
+          description: "Experience the romantic city of lakes with its beautiful palaces and serene waters.",
+          activities: ["Boat ride", "Palace visit", "Lakeside dinner"]
+        },
+        {
+          day: 5,
+          title: "Udaipur Exploration & Departure",
+          places: ["Saheliyon Ki Bari", "Fateh Sagar Lake", "Bagore Ki Haveli"],
+          hotels: ["Hotel Udaivilas", "Shiv Niwas Palace"],
+          description: "Final day exploring the gardens and cultural sites before departure.",
+          activities: ["Garden visit", "Cultural show", "Shopping for souvenirs"]
+        }
+      ]
+    }
+  ],
+  "Kerala": [
+    {
+      destination: "Kerala",
+      days: 6,
+      budget: "High",
+      itinerary: [
+        {
+          day: 1,
+          title: "Arrival in Kochi - Gateway to Kerala",
+          places: ["Fort Kochi", "Chinese Fishing Nets", "St. Francis Church"],
+          hotels: ["Casino Hotel", "Taj Malabar Resort"],
+          description: "Explore the historic port city with its colonial charm and maritime heritage.",
+          activities: ["Heritage walk", "Spice market visit", "Kathakali performance"]
+        },
+        {
+          day: 2,
+          title: "Munnar Hill Station",
+          places: ["Tea Gardens", "Mattupetty Dam", "Echo Point"],
+          hotels: ["Windermere Estate", "Tea Valley Resort"],
+          description: "Journey to the beautiful hill station famous for tea plantations.",
+          activities: ["Tea factory tour", "Nature walks", "Boating"]
+        },
+        {
+          day: 3,
+          title: "Thekkady Wildlife Experience",
+          places: ["Periyar Wildlife Sanctuary", "Spice Plantations", "Kumily"],
+          hotels: ["Spice Village", "Cardamom County"],
+          description: "Wildlife safari and spice plantation tours in the Western Ghats.",
+          activities: ["Jungle safari", "Spice tour", "Bamboo rafting"]
+        },
+        {
+          day: 4,
+          title: "Alleppey Backwaters",
+          places: ["Backwater Canals", "Kumarakom", "Vembanad Lake"],
+          hotels: ["Houseboat Stay", "Kumarakom Lake Resort"],
+          description: "Experience the serene backwaters on traditional houseboats.",
+          activities: ["Houseboat cruise", "Village visit", "Ayurvedic massage"]
+        },
+        {
+          day: 5,
+          title: "Kovalam Beach Relaxation",
+          places: ["Lighthouse Beach", "Hawah Beach", "Samudra Beach"],
+          hotels: ["Leela Kovalam", "Taj Green Cove"],
+          description: "Relax on the pristine beaches and enjoy water activities.",
+          activities: ["Beach relaxation", "Water sports", "Sunset viewing"]
+        },
+        {
+          day: 6,
+          title: "Trivandrum & Departure",
+          places: ["Padmanabhaswamy Temple", "Napier Museum", "Zoo"],
+          hotels: ["Leela Kovalam", "Taj Green Cove"],
+          description: "Explore the capital city before departure.",
+          activities: ["Temple visit", "Museum tour", "Shopping"]
         }
       ]
     }
   ]
 };
-
-export const sampleItineraries = itinerariesData;
-export type { Itinerary };
-export default itinerariesData;
