@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { moredetail } from "@/data/moredetail";
 import { Button } from "@/components/ui/button";
@@ -45,6 +45,11 @@ const DetailedItinerary = () => {
   const [selectedItem, setSelectedItem] = useState<DetailItem | null>(null);
   const [showBooking, setShowBooking] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // Get itinerary data
   const destinationKey = destination?.toLowerCase() as keyof typeof moredetail;
@@ -143,7 +148,7 @@ const DetailedItinerary = () => {
               key={day.day}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: index * 0.05 }}
             >
               <Card className="rounded-2xl shadow-md hover:shadow-lg transition-shadow">
                 <CardHeader className="pb-4">
@@ -351,7 +356,7 @@ const DetailedItinerary = () => {
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 p-3 bg-primary text-white rounded-full shadow-lg hover:shadow-xl transition-shadow"
+          className="fixed bottom-24 right-6 z-40 p-3 bg-primary text-white rounded-full shadow-lg hover:shadow-xl transition-shadow"
         >
           <ArrowUp className="w-5 h-5" />
         </motion.button>

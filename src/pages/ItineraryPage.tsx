@@ -58,10 +58,11 @@ const ItineraryPage = () => {
   // Calculate max days based on budget
   useEffect(() => {
     const calculateMaxDays = (budget: number) => {
-      if (budget <= 10000) return 3
-      if (budget <= 20000) return 7
-      if (budget <= 30000) return 10
-      if (budget <= 40000) return 12
+      if (budget <= 25000) return 2
+      if (budget <= 50000) return 3
+      if (budget <= 100000) return 5
+      if (budget <= 150000) return 7
+      if (budget <= 200000) return 10
       return 15
     }
 
@@ -83,18 +84,18 @@ const ItineraryPage = () => {
     setIsLoading(true)
 
     setTimeout(() => {
-      const destinationItineraries = sampleItineraries[formData.destination] || []
+      const destinationItineraries = sampleItineraries[formData.destination] || [];
       
       // Convert budget to category for matching
-      const getBudgetCategory = (budget: number) => {
-        if (budget <= 15000) return "Low";
-        if (budget <= 30000) return "Mid";
+      const getBudgetCategory = (budget: number): "Low" | "Mid" | "Luxury" => {
+        if (budget <= 50000) return "Low";
+        if (budget <= 150000) return "Mid";
         return "Luxury";
       };
       
       const budgetCategory = getBudgetCategory(formData.budget);
       const matchingItinerary = destinationItineraries.find(
-        (itinerary) => itinerary.budget === budgetCategory
+        (itinerary) => getBudgetCategory(itinerary.budget) === budgetCategory
       ) || destinationItineraries[0];
 
       if (matchingItinerary) {
@@ -129,8 +130,8 @@ const ItineraryPage = () => {
     
     // Convert budget number to category string
     const getBudgetCategory = (budget: number) => {
-      if (budget <= 15000) return "low";
-      if (budget <= 30000) return "mid";
+      if (budget <= 50000) return "low";
+      if (budget <= 150000) return "mid";
       return "luxury";
     };
     
@@ -143,9 +144,9 @@ const ItineraryPage = () => {
   }
 
   const getBudgetTier = (budget: number) => {
-    if (budget <= 15000) return { Icon: Wallet, text: "Budget Travel", color: "text-blue-600" }
-    if (budget <= 30000) return { Icon: Hotel, text: "Comfort Stay", color: "text-green-600" }
-    return { Icon: Crown, text: "Luxury Experience", color: "text-purple-600" }
+    if (budget <= 50000) return { Icon: Wallet, text: "Budget Travel", color: "text-blue-600" }
+    if (budget <= 150000) return { Icon: Hotel, text: "Premium Stay", color: "text-green-600" }
+    return { Icon: Crown, text: "Ultra Luxury", color: "text-purple-600" }
   }
 
   const budgetTier = getBudgetTier(formData.budget)
@@ -237,15 +238,15 @@ const ItineraryPage = () => {
                   <Slider
                     value={[formData.budget]}
                     onValueChange={(value) => handleInputChange("budget", value[0].toString())}
-                    max={100000}
+                    max={250000}
                     min={5000}
-                    step={2500}
+                    step={5000}
                     className="w-full"
                   />
                   <div className="flex justify-between text-sm text-gray-500 mt-3">
-                    <span className="font-medium">₹5,000</span>
-                    <span className="font-medium">₹25,000</span>
-                    <span className="font-medium">₹1,00,000+</span>
+                    <span className="font-medium">Budget<br/>₹5,000</span>
+                    <span className="font-medium">Mid-Range<br/>₹1,00,000</span>
+                    <span className="font-medium">Luxury<br/>₹2.5L+</span>
                   </div>
                 </div>
                 <div className="text-center p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200">

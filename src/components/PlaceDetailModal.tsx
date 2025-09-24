@@ -3,12 +3,20 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { MapPin, Clock, Star, Heart, Phone, Camera } from 'lucide-react';
-import { Place } from '@/data/itineraries';
+// Extending the Place type to include additional properties needed by the modal
+interface ExtendedPlace {
+  name: string;
+  image: string;
+  type: string;
+  description: string;
+  duration?: string;
+  rating?: number;
+}
 
 interface PlaceDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
-  place: Place;
+  place: ExtendedPlace;
   onBook: () => void;
 }
 
@@ -39,17 +47,19 @@ const PlaceDetailModal = ({ isOpen, onClose, place, onBook }: PlaceDetailModalPr
           <div className="space-y-4">
             <div>
               <div className="flex items-center gap-2 mt-2">
-                <div className="flex items-center">
-                  {[...Array(5)].map((_, i) => (
-                    <Star 
-                      key={i} 
-                      className={`w-4 h-4 ${i < Math.floor(place.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
-                    />
-                  ))}
-                  <span className="ml-2 text-sm text-muted-foreground">
-                    {place.rating} ({Math.floor(Math.random() * 1000) + 100} reviews)
-                  </span>
-                </div>
+                {place.rating && (
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <Star 
+                        key={i} 
+                        className={`w-4 h-4 ${i < Math.floor(place.rating || 0) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
+                      />
+                    ))}
+                    <span className="ml-2 text-sm text-muted-foreground">
+                      {place.rating} ({Math.floor(Math.random() * 1000) + 100} reviews)
+                    </span>
+                  </div>
+                )}
                 <Badge variant="secondary">{place.type}</Badge>
               </div>
             </div>
