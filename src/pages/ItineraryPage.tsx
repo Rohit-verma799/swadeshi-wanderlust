@@ -27,7 +27,7 @@ import {
   Settings,
   Eye,
 } from "lucide-react"
-import { sampleItineraries, type Itinerary, type Hotel as HotelType, type Place } from "@/data/itineraries"
+import { sampleItineraries, type Itinerary, type Place } from "@/data/itineraries";
 import PlaceDetailModal from "@/components/PlaceDetailModal"
 
 const ItineraryPage = () => {
@@ -36,13 +36,13 @@ const ItineraryPage = () => {
     days: "",
     budget: 20000,
   })
-  const [generatedItinerary, setGeneratedItinerary] = useState<Itinerary | null>(null)
+  const [generatedItinerary, setGeneratedItinerary] = useState<any | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [maxDaysAllowed, setMaxDaysAllowed] = useState(15)
   const [showBudgetAnimation, setShowBudgetAnimation] = useState(false)
   const [detailModal, setDetailModal] = useState<{
     isOpen: boolean
-    item: HotelType | Place | null
+    item: Place | null
     type: "hotel" | "place"
   }>({
     isOpen: false,
@@ -105,7 +105,7 @@ const ItineraryPage = () => {
     }))
   }
 
-  const openDetailModal = (item: HotelType | Place, type: "hotel" | "place") => {
+  const openDetailModal = (item: Place, type: "hotel" | "place") => {
     setDetailModal({ isOpen: true, item, type })
   }
 
@@ -512,12 +512,17 @@ const ItineraryPage = () => {
             
 
             {/* Detail Modal */}
-            <PlaceDetailModal
-              isOpen={detailModal.isOpen}
-              onClose={() => setDetailModal({ isOpen: false, item: null, type: "hotel" })}
-              item={detailModal.item}
-              type={detailModal.type}
-              destination={generatedItinerary?.destination || ""} />
+            {detailModal.item && (
+              <PlaceDetailModal
+                isOpen={detailModal.isOpen}
+                onClose={() => setDetailModal({ isOpen: false, item: null, type: "hotel" })}
+                place={detailModal.item}
+                onBook={() => {
+                  setDetailModal({ isOpen: false, item: null, type: "hotel" });
+                  setShowBooking(true);
+                }}
+              />
+            )}
             </div>
 
             <style>{`
