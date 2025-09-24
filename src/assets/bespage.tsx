@@ -1,18 +1,21 @@
+// src/app/BusinessPage.tsx
 'use client';
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import BusinessCard from '@/components/BusinessCard';
 import { businesses, Business } from '@/data/businesses';
-import { Search } from 'lucide-react';
+import { Search, Filter } from 'lucide-react';
 
 const BusinessPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('hotel');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedLocation, setSelectedLocation] = useState<string>('all');
 
+  const categories = ['all', ...Array.from(new Set(businesses.map(b => b.category)))];
   const locations = ['all', ...Array.from(new Set(businesses.map(b => b.location)))];
 
   const filteredBusinesses = businesses.filter((business: Business) => {
@@ -56,35 +59,39 @@ const BusinessPage = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            {/* Category Filter Buttons */}
-            <Button
-              variant={selectedCategory === 'all' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('all')}
-              className={selectedCategory === 'all' ? 'bg-primary text-white' : ''}
-            >
-              All Businesses
-            </Button>
-            <Button
-              variant={selectedCategory === 'hotel' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('hotel')}
-              className={selectedCategory === 'hotel' ? 'bg-primary text-white' : ''}
-            >
-              Hotels
-            </Button>
-            <Button
-              variant={selectedCategory === 'restaurant' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('restaurant')}
-              className={selectedCategory === 'restaurant' ? 'bg-primary text-white' : ''}
-            >
-              Restaurants
-            </Button>
-            <Button
-              variant={selectedCategory === 'shop' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('shop')}
-              className={selectedCategory === 'shop' ? 'bg-primary text-white' : ''}
-            >
-              Shops
-            </Button>
+            <div className="flex items-center space-x-2">
+              <Filter className="w-5 h-5 text-gray-400" />
+              <span className="text-sm font-medium text-gray-700">Filters:</span>
+            </div>
+
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger className="w-48 shadow-sm">
+                <SelectValue placeholder="All Categories" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category === 'all'
+                      ? `All Categories (${getCategoryCount(category)})`
+                      : `${category.charAt(0).toUpperCase() + category.slice(1)} (${getCategoryCount(category)})`
+                    }
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={selectedLocation} onValueChange={setSelectedLocation}>
+              <SelectTrigger className="w-48 shadow-sm">
+                <SelectValue placeholder="All Locations" />
+              </SelectTrigger>
+              <SelectContent>
+                {locations.map((location) => (
+                  <SelectItem key={location} value={location}>
+                    {location === 'all' ? 'All Locations' : location}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {(selectedCategory !== 'all' || selectedLocation !== 'all' || searchTerm) && (
@@ -111,12 +118,24 @@ const BusinessPage = () => {
                   </button>
                 </Badge>
               )}
+              {selectedLocation !== 'all' && (
+                <Badge variant="secondary" className="bg-gray-200">
+                  {selectedLocation}
+                  <button
+                    onClick={() => setSelectedLocation('all')}
+                    className="ml-2 hover:text-red-500"
+                  >
+                    ✕
+                  </button>
+                </Badge>
+              )}
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => {
                   setSearchTerm('');
                   setSelectedCategory('all');
+                  setSelectedLocation('all');
                 }}
                 className="text-xs text-blue-500 hover:bg-blue-50"
               >
@@ -151,6 +170,7 @@ const BusinessPage = () => {
               onClick={() => {
                 setSearchTerm('');
                 setSelectedCategory('all');
+                setSelectedLocation('all');
               }}
               variant="outline"
               className="border-gray-300 text-gray-700 hover:bg-gray-100"
