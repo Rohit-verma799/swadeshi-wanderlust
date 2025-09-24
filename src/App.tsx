@@ -13,7 +13,7 @@ import BookingPage from "./pages/BookingPage";
 import NotFound from "./pages/NotFound";
 import RoadMap from "./pages/roadMap";
 import  Ticket from "./pages/Ticket";
-
+import UserStay from "./pages/UserStay";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -32,6 +32,7 @@ const App = () => (
               <Route path="/itinerary" element={<ItineraryPage />} />
               <Route path="/businesses" element={<BusinessPage />} />
               <Route path="/booking" element={<BookingPage />} />
+              <Route path="/user-stay" element={<UserStay />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
 import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
@@ -13,6 +14,7 @@ const Navbar = () => {
     { name: 'Businesses', path: '/businesses' },
     { name: 'Bookings', path: '/booking' },
     { name: 'Ticket', path: '/ticket' },
+    { name: 'Stay', path: '/user-stay' }
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -47,10 +49,22 @@ const Navbar = () => {
               </Link>
             ))}
             <a href="/roadmap">
-            <Button variant="default" size="sm" className="shadow-soft">
-             Future RoadMap
-            </Button>
+              <Button variant="default" size="sm" className="shadow-soft">
+                Future RoadMap
+              </Button>
             </a>
+
+            {/* Clerk auth controls */}
+            <div className="flex items-center space-x-3">
+              <SignedOut>
+                <SignInButton mode="redirect">
+                  <Button variant="ghost" size="sm">Login</Button>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </div>
           </div>
 
           {/* Mobile menu button */}
@@ -88,6 +102,16 @@ const Navbar = () => {
                 Future RoadMap
               </Button>
               </a>
+              <div className="mt-3 flex items-center justify-between">
+                <SignedOut>
+                  <SignInButton mode="redirect">
+                    <Button variant="default" size="sm" className="w-full">Login</Button>
+                  </SignInButton>
+                </SignedOut>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
+              </div>
             </div>
           </div>
         )}
