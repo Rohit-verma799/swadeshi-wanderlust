@@ -12,7 +12,8 @@ import BusinessPage from "./pages/BusinessPage";
 import BookingPage from "./pages/BookingPage";
 import NotFound from "./pages/NotFound";
 import RoadMap from "./pages/roadMap";
-import  Ticket from "./pages/Ticket";
+import Ticket from "./pages/Ticket";
+import DetailedItinerary from "./pages/DetailedItinerary";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
               <Route path="/roadmap" element={<RoadMap />} />
               <Route path="/ticket" element={<Ticket />} />
               <Route path="/itinerary" element={<ItineraryPage />} />
+              <Route path="/detailed-itinerary/:destination/:budget/:days" element={<DetailedItinerary />} />
               <Route path="/businesses" element={<BusinessPage />} />
               <Route path="/booking" element={<BookingPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
