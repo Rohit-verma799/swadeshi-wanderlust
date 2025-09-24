@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -31,6 +32,7 @@ import { sampleItineraries, type Itinerary, type Place } from "@/data/itinerarie
 import PlaceDetailModal from "@/components/PlaceDetailModal"
 
 const ItineraryPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     destination: "",
     days: "",
@@ -120,7 +122,24 @@ const ItineraryPage = () => {
   }
 
   const handleViewFullItinerary = () => {
-    console.log("View full itinerary and customize")
+    if (!formData.destination || !formData.days) {
+      console.log("Missing destination or days");
+      return;
+    }
+    
+    // Convert budget number to category string
+    const getBudgetCategory = (budget: number) => {
+      if (budget <= 15000) return "low";
+      if (budget <= 30000) return "mid";
+      return "luxury";
+    };
+    
+    const budgetCategory = getBudgetCategory(formData.budget);
+    const destination = formData.destination.toLowerCase();
+    const days = formData.days;
+    
+    // Navigate to detailed itinerary page
+    navigate(`/detailed-itinerary/${destination}/${budgetCategory}/${days}`);
   }
 
   const getBudgetTier = (budget: number) => {
