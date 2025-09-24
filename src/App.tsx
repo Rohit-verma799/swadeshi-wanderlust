@@ -11,6 +11,8 @@ import ItineraryPage from "./pages/ItineraryPage";
 import BusinessPage from "./pages/BusinessPage";
 import BookingPage from "./pages/BookingPage";
 import NotFound from "./pages/NotFound";
+import RoadMap from "./pages/roadMap";
+import  Ticket from "./pages/Ticket";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,8 @@ const App = () => (
           <main className="flex-1">
             <Routes>
               <Route path="/" element={<LandingPage />} />
+              <Route path="/roadmap" element={<RoadMap />} />
+              <Route path="/ticket" element={<Ticket />} />
               <Route path="/itinerary" element={<ItineraryPage />} />
               <Route path="/businesses" element={<BusinessPage />} />
               <Route path="/booking" element={<BookingPage />} />
