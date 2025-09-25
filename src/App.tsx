@@ -12,11 +12,11 @@ import BusinessPage from "./pages/BusinessPage";
 import BookingPage from "./pages/BookingPage";
 import NotFound from "./pages/NotFound";
 import RoadMap from "./pages/roadMap";
-import Ticket from "./pages/Ticket";
+import  Ticket from "./pages/Ticket";
+import UserStay from "./pages/UserStay";
 import DetailedItinerary from "./pages/DetailedItinerary";
-import AgentDashboard from "./pages/AgentDashBoard";
 import TourPage from "./pages/TourPage";
-
+import AgentDashboard from "./pages/AgentDashboard";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -38,6 +38,7 @@ const App = () => (
               <Route path="/detailed-itinerary/:destination/:budget/:days" element={<DetailedItinerary />} />
               <Route path="/businesses" element={<BusinessPage />} />
               <Route path="/booking" element={<BookingPage />} />
+              <Route path="/user-stay" element={<UserStay />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
