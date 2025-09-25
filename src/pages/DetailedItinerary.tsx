@@ -21,6 +21,9 @@ import {
   Heart,
   Star
 } from "lucide-react";
+// Import new images
+import tajMahalImg from '@/assets/taj-mahal-sunrise.jpg';
+import jaipurImg from '@/assets/jaipur-hawa-mahal.jpg';
 
 interface DetailItem {
   name: string;
@@ -92,7 +95,7 @@ const DetailedItinerary = () => {
       category: item.category,
       priceRange: item.priceRange,
       approxCost: item.approxCost || item.costEstimate,
-      images: ["/taj.jpg", "/taj2.jpg"], // Demo images
+      images: [tajMahalImg, jaipurImg], // Demo images
       rating: 4.2 + Math.random() * 0.8,
       mapLink: item.mapLink
     };
@@ -370,13 +373,13 @@ const DetailedItinerary = () => {
           place={{
             name: selectedItem.name,
             description: selectedItem.description || "",
-            image: selectedItem.images?.[0] || "/taj.jpg",
+            image: selectedItem.images?.[0] || tajMahalImg,
             rating: selectedItem.rating || 4.2,
             type: selectedItem.category || "Attraction",
             duration: "2-3 hours",
             timing: "9:00 AM - 6:00 PM",
             mapLink: selectedItem.mapLink,
-            gallery: selectedItem.images || ["/taj.jpg", "/taj2.jpg"]
+            gallery: selectedItem.images || [tajMahalImg, jaipurImg]
           }}
           onBook={() => {
             setSelectedItem(null);

@@ -1,8 +1,15 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { MapPin, Clock, Star, Heart, Phone, Camera, Navigation, Calendar, Info } from 'lucide-react';
+import { Clock, MapPin, Star, Heart, Navigation, Camera, ArrowLeft, Calendar, Phone, Info } from "lucide-react";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
+import { Card, CardContent } from "./ui/card";
+import { Separator } from "./ui/separator";
+// Import new images
+import keralbackwatersImg from '@/assets/kerala-backwaters.jpg';
+import tajMahalImg from '@/assets/taj-mahal-sunrise.jpg';
+import jaipurImg from '@/assets/jaipur-hawa-mahal.jpg';
+import goaImg from '@/assets/goa-beach.jpg';
+import himachalImg from '@/assets/himachal-mountains.jpg';
 // Extending the Place type to include additional properties needed by the modal
 interface ExtendedPlace {
   name: string;
@@ -55,7 +62,7 @@ const PlaceDetailModal = ({ isOpen, onClose, place, onBook }: PlaceDetailModalPr
 
           {/* Additional Gallery Images */}
           <div className="grid grid-cols-3 gap-2">
-            {[place.image, "/taj2.jpg", "/taj.jpg"].map((img, idx) => (
+            {[place.image, keralbackwatersImg, tajMahalImg, jaipurImg, goaImg, himachalImg].map((img, idx) => (
               <div key={idx} className="relative aspect-square rounded-lg overflow-hidden">
                 <img
                   src={img}
@@ -119,7 +126,11 @@ const PlaceDetailModal = ({ isOpen, onClose, place, onBook }: PlaceDetailModalPr
               <Button 
                 variant="outline" 
                 className="flex items-center gap-2" 
-                onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(place.name)}`, '_blank')}
+                onClick={() => {
+                  // Create a search query for the place name
+                  const searchQuery = encodeURIComponent(place.name);
+                  window.open(`https://www.openstreetmap.org/search?query=${searchQuery}`, '_blank');
+                }}
               >
                 <Navigation className="w-4 h-4" />
                 Get Directions
@@ -164,7 +175,11 @@ const PlaceDetailModal = ({ isOpen, onClose, place, onBook }: PlaceDetailModalPr
               <Button 
                 variant="outline" 
                 size="icon"
-                onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(place.name)}`, '_blank')}
+                onClick={() => {
+                  // Create a search query for the place name  
+                  const searchQuery = encodeURIComponent(place.name);
+                  window.open(`https://www.openstreetmap.org/search?query=${searchQuery}`, '_blank');
+                }}
                 className="hover:bg-blue-50 hover:text-blue-600"
               >
                 <MapPin className="w-4 h-4" />
