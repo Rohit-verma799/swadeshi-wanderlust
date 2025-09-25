@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { LayoutDashboard, Package, CalendarCheck, UserCircle, LogOut, PlusCircle, MoreHorizontal, X, BarChart2, Star, Edit, Save, MessageSquare } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 // --- EXPANDED MOCK DATA ---
 const initialAgentData = {
@@ -13,7 +14,14 @@ const initialAgentData = {
     verified: true,
   },
   dashboardStats: {
-    monthlyEarningsData: [1.2, 1.8, 1.5, 2.5, 2.1, 3.4], // Lakhs
+    monthlyEarningsData: [
+        { month: 'Apr', earnings: 1.2 },
+        { month: 'May', earnings: 1.8 },
+        { month: 'Jun', earnings: 1.5 },
+        { month: 'Jul', earnings: 2.5 },
+        { month: 'Aug', earnings: 2.1 },
+        { month: 'Sep', earnings: 3.4 },
+    ],
     activePackages: 3,
     pendingQueries: 3,
   },
@@ -42,10 +50,11 @@ const AgentDashboard: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [profileData, setProfileData] = useState(initialAgentData.profile);
+  const [activeIndex, setActiveIndex] = useState(agentData.dashboardStats.monthlyEarningsData.length - 1);
 
   // Derived state
   const totalBookings = agentData.bookings.length;
-  const monthlyEarnings = agentData.dashboardStats.monthlyEarningsData[agentData.dashboardStats.monthlyEarningsData.length - 1] * 100000;
+  const monthlyEarnings = agentData.dashboardStats.monthlyEarningsData[agentData.dashboardStats.monthlyEarningsData.length - 1].earnings * 100000;
 
   const handleAddPackage = (newPackage: Omit<PackageType, 'id' | 'bookings' | 'rating'>) => {
     const newPkg: PackageType = {
@@ -118,22 +127,32 @@ const AgentDashboard: React.FC = () => {
     );
   };
 
-  const EarningsChart: React.FC<{ data: number[] }> = ({ data }) => {
-    const maxValue = Math.max(...data, 1); // Avoid division by zero
+  const EarningsChart: React.FC<{ data: {month: string, earnings: number}[] }> = ({ data }) => {
     return (
       <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm col-span-1 lg:col-span-2">
-        <h3 className="text-lg font-semibold text-slate-800 mb-4">Monthly Earnings (in Lakhs)</h3>
-        <div className="flex justify-around items-end h-48 pt-4">
-          {data.map((value, index) => (
-            <div key={index} className="flex flex-col items-center group">
-              <div 
-                className="w-10 bg-orange-300 rounded-t-lg hover:bg-orange-500 transition-all"
-                style={{ height: `${(value / maxValue) * 100}%` }}
-              ></div>
-              <span className="text-xs text-gray-500 mt-2">{['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'][index]}</span>
-            </div>
-          ))}
-        </div>
+        <h3 className="text-lg font-semibold text-slate-800 mb-4">Monthly Earnings</h3>
+        <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={data} onMouseMove={(state) => {
+                if(state.isTooltipActive) {
+                    setActiveIndex(state.activeTooltipIndex || 0);
+                }
+            }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="month" tick={{fontSize: 12}}/>
+                <YAxis axisLine={false} tickLine={false} tick={{fontSize: 12}} tickFormatter={(value) => `₹${value}L`} />
+                <Tooltip 
+                    cursor={{fill: 'rgba(249, 115, 22, 0.1)'}}
+                    contentStyle={{backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '8px'}}
+                    labelStyle={{fontWeight: 'bold', color: '#333'}}
+                    formatter={(value) => [`₹${value} Lakhs`, 'Earnings']}
+                />
+                <Bar dataKey="earnings" radius={[4, 4, 0, 0]}>
+                    {data.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={index === activeIndex ? '#f97316' : '#fdba74'} />
+                    ))}
+                </Bar>
+            </BarChart>
+        </ResponsiveContainer>
       </div>
     );
   };
