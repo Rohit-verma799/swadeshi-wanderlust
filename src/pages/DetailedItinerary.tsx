@@ -372,7 +372,11 @@ const DetailedItinerary = () => {
             description: selectedItem.description || "",
             image: selectedItem.images?.[0] || "/taj.jpg",
             rating: selectedItem.rating || 4.2,
-            type: selectedItem.category || "Attraction"
+            type: selectedItem.category || "Attraction",
+            duration: "2-3 hours",
+            timing: "9:00 AM - 6:00 PM",
+            mapLink: selectedItem.mapLink,
+            gallery: selectedItem.images || ["/taj.jpg", "/taj2.jpg"]
           }}
           onBook={() => {
             setSelectedItem(null);

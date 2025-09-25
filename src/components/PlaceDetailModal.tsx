@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { MapPin, Clock, Star, Heart, Phone, Camera } from 'lucide-react';
+import { MapPin, Clock, Star, Heart, Phone, Camera, Navigation, Calendar, Info } from 'lucide-react';
 // Extending the Place type to include additional properties needed by the modal
 interface ExtendedPlace {
   name: string;
@@ -11,6 +11,9 @@ interface ExtendedPlace {
   description: string;
   duration?: string;
   rating?: number;
+  timing?: string;
+  mapLink?: string;
+  gallery?: string[];
 }
 
 interface PlaceDetailModalProps {
@@ -35,13 +38,32 @@ const PlaceDetailModal = ({ isOpen, onClose, place, onBook }: PlaceDetailModalPr
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Hero Image */}
+          {/* Photo Gallery */}
           <div className="relative">
             <img
               src={place.image}
               alt={place.name}
               className="w-full h-64 object-cover rounded-lg"
             />
+            <div className="absolute top-4 right-4">
+              <Badge className="bg-black/50 text-white border-0">
+                <Camera className="w-3 h-3 mr-1" />
+                Photo Gallery
+              </Badge>
+            </div>
+          </div>
+
+          {/* Additional Gallery Images */}
+          <div className="grid grid-cols-3 gap-2">
+            {[place.image, "/taj2.jpg", "/taj.jpg"].map((img, idx) => (
+              <div key={idx} className="relative aspect-square rounded-lg overflow-hidden">
+                <img
+                  src={img}
+                  alt={`${place.name} ${idx + 1}`}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform cursor-pointer"
+                />
+              </div>
+            ))}
           </div>
           
           <div className="space-y-4">
@@ -71,44 +93,81 @@ const PlaceDetailModal = ({ isOpen, onClose, place, onBook }: PlaceDetailModalPr
               <p className="text-muted-foreground">{place.description}</p>
             </div>
 
-            {place.duration && (
-              <>
-                <Separator />
-                <div>
-                  <h3 className="font-semibold mb-2 flex items-center gap-2">
-                    <Clock className="w-4 h-4" />
-                    Duration
-                  </h3>
-                  <p className="text-muted-foreground">{place.duration}</p>
-                </div>
-              </>
-            )}
+            {/* Timing and Duration */}
+            <Separator />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <h3 className="font-semibold mb-2 flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-primary" />
+                  Duration
+                </h3>
+                <p className="text-muted-foreground">{place.duration || "2-3 hours"}</p>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2 flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-primary" />
+                  Best Time
+                </h3>
+                <p className="text-muted-foreground">9:00 AM - 6:00 PM</p>
+              </div>
+            </div>
 
             <Separator />
 
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-primary" />
-                <span className="font-medium">Location & Directions</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-primary" />
-                <span className="font-medium">Contact Information</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Camera className="w-5 h-5 text-primary" />
-                <span className="font-medium">Photo Gallery</span>
+            {/* Quick Actions */}
+            <div className="grid grid-cols-2 gap-3">
+              <Button 
+                variant="outline" 
+                className="flex items-center gap-2" 
+                onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(place.name)}`, '_blank')}
+              >
+                <Navigation className="w-4 h-4" />
+                Get Directions
+              </Button>
+              <Button 
+                variant="outline" 
+                className="flex items-center gap-2"
+                onClick={() => window.open(`tel:+91-141-2345678`, '_blank')}
+              >
+                <Phone className="w-4 h-4" />
+                Contact
+              </Button>
+            </div>
+
+            {/* Additional Information */}
+            <div className="bg-muted/50 p-4 rounded-lg space-y-2">
+              <h3 className="font-semibold flex items-center gap-2">
+                <Info className="w-4 h-4 text-primary" />
+                Quick Info
+              </h3>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="font-medium">Entry Fee:</span>
+                  <p className="text-muted-foreground">₹200 (Indians), ₹500 (Foreigners)</p>
+                </div>
+                <div>
+                  <span className="font-medium">Parking:</span>
+                  <p className="text-muted-foreground">Available (₹20)</p>
+                </div>
               </div>
             </div>
 
             <Separator />
 
             <div className="flex gap-3">
-              <Button onClick={handleBookNow} className="flex-1">
-                Book Now
+              <Button onClick={handleBookNow} className="flex-1 bg-primary hover:bg-primary/90">
+                Book Experience Now
               </Button>
-              <Button variant="outline" size="icon">
+              <Button variant="outline" size="icon" className="hover:bg-red-50 hover:text-red-600">
                 <Heart className="w-4 h-4" />
+              </Button>
+              <Button 
+                variant="outline" 
+                size="icon"
+                onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(place.name)}`, '_blank')}
+                className="hover:bg-blue-50 hover:text-blue-600"
+              >
+                <MapPin className="w-4 h-4" />
               </Button>
             </div>
           </div>

@@ -86,16 +86,20 @@ const ItineraryPage = () => {
     setTimeout(() => {
       const destinationItineraries = sampleItineraries[formData.destination] || [];
       
-      // Convert budget to category for matching
-      const getBudgetCategory = (budget: number): "Low" | "Mid" | "Luxury" => {
+      // Convert budget to category for matching with proper budget ranges from data
+      const getBudgetCategory = (budget: number): string => {
         if (budget <= 50000) return "Low";
         if (budget <= 150000) return "Mid";
         return "Luxury";
       };
       
       const budgetCategory = getBudgetCategory(formData.budget);
+      // Find the best matching itinerary based on budget range
       const matchingItinerary = destinationItineraries.find(
-        (itinerary) => getBudgetCategory(itinerary.budget) === budgetCategory
+        (itinerary) => {
+          const itineraryCategory = getBudgetCategory(itinerary.budget);
+          return itineraryCategory === budgetCategory;
+        }
       ) || destinationItineraries[0];
 
       if (matchingItinerary) {
