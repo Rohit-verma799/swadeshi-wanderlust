@@ -40,7 +40,8 @@ const Navbar = () => {
     { name: 'Tour Packages', path: '/TourPage' },
     { name: 'Bookings', path: '/booking' },
     { name: 'Ticket', path: '/ticket' },
-    { name: 'Stay', path: '/user-stay' }
+    { name: 'Stay', path: '/user-stay' },
+    { name: 'Agent Login', path: '/AgentPage' }
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -72,11 +73,6 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
-            <a href="/roadmap">
-              <Button variant="default" size="sm" className="shadow-soft">
-                Future RoadMap
-              </Button>
-            </a>
 
             <div className="flex items-center space-x-3">
               <SignedOut>
@@ -118,21 +114,6 @@ const Navbar = () => {
                   {item.name}
                 </Link>
               ))}
-              <a href="roadmap">
-                <Button variant="default" size="sm" className="mt-2 shadow-soft w-full">
-                  Future RoadMap
-                </Button>
-              </a>
-              <div className="mt-3 flex items-center justify-between">
-                <SignedOut>
-                  <SignInButton mode="redirect">
-                    <Button variant="default" size="sm" className="w-full">Login</Button>
-                  </SignInButton>
-                </SignedOut>
-                <SignedIn>
-                  <UserButton />
-                </SignedIn>
-              </div>
             </div>
           </div>
         )}
