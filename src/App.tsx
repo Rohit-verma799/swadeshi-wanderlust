@@ -28,7 +28,7 @@ const App = () => (
           <Navbar />
           <main className="flex-1">
             <Routes>
-              <Route path="/" element={<AgentDashboard />} />
+              <Route path="/" element={<LandingPage />} />
               <Route path="/roadmap" element={<RoadMap />} />
               <Route path="/ticket" element={<Ticket />} />
               <Route path="/itinerary" element={<ItineraryPage />} />
