@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -27,22 +28,24 @@ import {
   Settings,
   Eye,
 } from "lucide-react"
-import { sampleItineraries, type Itinerary, type Hotel as HotelType, type Place } from "@/data/itineraries"
+import { sampleItineraries, type Itinerary, type Place } from "@/data/itineraries";
 import PlaceDetailModal from "@/components/PlaceDetailModal"
 
 const ItineraryPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     destination: "",
     days: "",
     budget: 20000,
   })
-  const [generatedItinerary, setGeneratedItinerary] = useState<Itinerary | null>(null)
+  const [generatedItinerary, setGeneratedItinerary] = useState<any | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [maxDaysAllowed, setMaxDaysAllowed] = useState(15)
   const [showBudgetAnimation, setShowBudgetAnimation] = useState(false)
+  const [showBooking, setShowBooking] = useState(false)
   const [detailModal, setDetailModal] = useState<{
     isOpen: boolean
-    item: HotelType | Place | null
+    item: Place | null
     type: "hotel" | "place"
   }>({
     isOpen: false,
@@ -55,10 +58,11 @@ const ItineraryPage = () => {
   // Calculate max days based on budget
   useEffect(() => {
     const calculateMaxDays = (budget: number) => {
-      if (budget <= 10000) return 3
-      if (budget <= 20000) return 7
-      if (budget <= 30000) return 10
-      if (budget <= 40000) return 12
+      if (budget <= 15000) return 2
+      if (budget <= 30000) return 3
+      if (budget <= 50000) return 5
+      if (budget <= 75000) return 7
+      if (budget <= 100000) return 10
       return 15
     }
 
@@ -80,10 +84,23 @@ const ItineraryPage = () => {
     setIsLoading(true)
 
     setTimeout(() => {
-      const destinationItineraries = sampleItineraries[formData.destination] || []
-      const matchingItinerary =
-        destinationItineraries.find((itinerary) => Math.abs(itinerary.budget - formData.budget) <= 10000) ||
-        destinationItineraries[0]
+      const destinationItineraries = sampleItineraries[formData.destination] || [];
+      
+      // Convert budget to category for matching with proper budget ranges from data
+      const getBudgetCategory = (budget: number): string => {
+        if (budget <= 30000) return "Low";
+        if (budget <= 70000) return "Mid";
+        return "Luxury";
+      };
+      
+      const budgetCategory = getBudgetCategory(formData.budget);
+      // Find the best matching itinerary based on budget range
+      const matchingItinerary = destinationItineraries.find(
+        (itinerary) => {
+          const itineraryCategory = getBudgetCategory(itinerary.budget);
+          return itineraryCategory === budgetCategory;
+        }
+      ) || destinationItineraries[0];
 
       if (matchingItinerary) {
         const selectedDays = Number.parseInt(formData.days)
@@ -105,18 +122,35 @@ const ItineraryPage = () => {
     }))
   }
 
-  const openDetailModal = (item: HotelType | Place, type: "hotel" | "place") => {
+  const openDetailModal = (item: Place, type: "hotel" | "place") => {
     setDetailModal({ isOpen: true, item, type })
   }
 
   const handleViewFullItinerary = () => {
-    console.log("View full itinerary and customize")
+    if (!formData.destination || !formData.days) {
+      console.log("Missing destination or days");
+      return;
+    }
+    
+    // Convert budget number to category string
+    const getBudgetCategory = (budget: number) => {
+      if (budget <= 30000) return "low";
+      if (budget <= 70000) return "mid";
+      return "luxury";
+    };
+    
+    const budgetCategory = getBudgetCategory(formData.budget);
+    const destination = formData.destination.toLowerCase();
+    const days = formData.days;
+    
+    // Navigate to detailed itinerary page
+    navigate(`/detailed-itinerary/${destination}/${budgetCategory}/${days}`);
   }
 
   const getBudgetTier = (budget: number) => {
-    if (budget <= 15000) return { Icon: Wallet, text: "Budget Travel", color: "text-blue-600" }
-    if (budget <= 30000) return { Icon: Hotel, text: "Comfort Stay", color: "text-green-600" }
-    return { Icon: Crown, text: "Luxury Experience", color: "text-purple-600" }
+    if (budget <= 30000) return { Icon: Wallet, text: "Budget Travel", color: "text-blue-600" }
+    if (budget <= 70000) return { Icon: Hotel, text: "Premium Stay", color: "text-green-600" }
+    return { Icon: Crown, text: "Ultra Luxury", color: "text-purple-600" }
   }
 
   const budgetTier = getBudgetTier(formData.budget)
@@ -210,13 +244,13 @@ const ItineraryPage = () => {
                     onValueChange={(value) => handleInputChange("budget", value[0].toString())}
                     max={100000}
                     min={5000}
-                    step={2500}
+                    step={5000}
                     className="w-full"
                   />
                   <div className="flex justify-between text-sm text-gray-500 mt-3">
-                    <span className="font-medium">₹5,000</span>
-                    <span className="font-medium">₹25,000</span>
-                    <span className="font-medium">₹1,00,000+</span>
+                    <span className="font-medium">Budget<br/>₹5,000</span>
+                    <span className="font-medium">Mid-Range<br/>₹50,000</span>
+                    <span className="font-medium">Luxury<br/>₹1L</span>
                   </div>
                 </div>
                 <div className="text-center p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200">
@@ -512,12 +546,17 @@ const ItineraryPage = () => {
             
 
             {/* Detail Modal */}
-            <PlaceDetailModal
-              isOpen={detailModal.isOpen}
-              onClose={() => setDetailModal({ isOpen: false, item: null, type: "hotel" })}
-              item={detailModal.item}
-              type={detailModal.type}
-              destination={generatedItinerary?.destination || ""} />
+            {detailModal.item && (
+              <PlaceDetailModal
+                isOpen={detailModal.isOpen}
+                onClose={() => setDetailModal({ isOpen: false, item: null, type: "hotel" })}
+                place={detailModal.item}
+                onBook={() => {
+                  setDetailModal({ isOpen: false, item: null, type: "hotel" });
+                  setShowBooking(true);
+                }}
+              />
+            )}
             </div>
 
             <style>{`

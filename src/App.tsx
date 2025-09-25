@@ -26,10 +26,13 @@ const App = () => (
           <Navbar />
           <main className="flex-1">
             <Routes>
-              <Route path="/" element={<LandingPage />} />
+              <Route path="/" element={<LandingPage/>} />
+              <Route path="TourPage" element={<TourPage/>} />
+              <Route path="AgentPage" element={<AgentDashboard/>} />
               <Route path="/roadmap" element={<RoadMap />} />
               <Route path="/ticket" element={<Ticket />} />
               <Route path="/itinerary" element={<ItineraryPage />} />
+              <Route path="/detailed-itinerary/:destination/:budget/:days" element={<DetailedItinerary />} />
               <Route path="/businesses" element={<BusinessPage />} />
               <Route path="/booking" element={<BookingPage />} />
               <Route path="/user-stay" element={<UserStay />} />

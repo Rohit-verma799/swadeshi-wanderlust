@@ -63,6 +63,9 @@ interface TravelData {
   };
 }
 
+// Global replace for Google Maps URLs - replace with OpenStreetMap
+// Pattern: https://maps.google.com/?q= -> https://www.openstreetmap.org/search?query=
+
 export const moredetail: TravelData = {
   "rajasthan": {
     "low": {
@@ -81,7 +84,7 @@ export const moredetail: TravelData = {
               "description": "Explore the iconic Palace of Winds from outside",
               "category": "Culture",
               "costEstimate": "₹30",
-              "mapLink": "https://maps.google.com/?q=Hawa+Mahal+Jaipur"
+              "mapLink": "https://www.openstreetmap.org/search?query=Hawa+Mahal+Jaipur"
             },
             {
               "time": "12:00 PM",
@@ -89,7 +92,7 @@ export const moredetail: TravelData = {
               "description": "Visit the royal palace and museums",
               "category": "Culture",
               "costEstimate": "₹500",
-              "mapLink": "https://maps.google.com/?q=City+Palace+Jaipur"
+              "mapLink": "https://www.openstreetmap.org/search?query=City+Palace+Jaipur"
             },
             {
               "time": "3:00 PM",
@@ -97,7 +100,7 @@ export const moredetail: TravelData = {
               "description": "Ancient astronomical observatory",
               "category": "Culture",
               "costEstimate": "₹200",
-              "mapLink": "https://maps.google.com/?q=Jantar+Mantar+Jaipur"
+              "mapLink": "https://www.openstreetmap.org/search?query=Jantar+Mantar+Jaipur"
             },
             {
               "time": "5:00 PM",
@@ -105,7 +108,7 @@ export const moredetail: TravelData = {
               "description": "Explore local markets for handicrafts",
               "category": "Shopping",
               "costEstimate": "₹200",
-              "mapLink": "https://maps.google.com/?q=Johari+Bazaar+Jaipur"
+              "mapLink": "https://www.openstreetmap.org/search?query=Johari+Bazaar+Jaipur"
             }
           ],
           "food": [
@@ -124,7 +127,7 @@ export const moredetail: TravelData = {
             "name": "Hotel Pearl Palace",
             "category": "Budget Hotel",
             "priceRange": "₹800/night",
-            "mapLink": "https://maps.google.com/?q=Hotel+Pearl+Palace+Jaipur"
+            "mapLink": "https://www.openstreetmap.org/search?query=Hotel+Pearl+Palace+Jaipur"
           },
           "localBusiness": [
             {
