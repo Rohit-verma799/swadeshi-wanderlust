@@ -80,11 +80,7 @@ const Navbar = () => {
                   {item.name}
                 </Link>
               ))}
-              <a href="roadmap">
-              <Button variant="default" size="sm" className="mt-2 shadow-soft w-full">
-                Future RoadMap
-              </Button>
-              </a>
+
             </div>
           </div>
         )}
