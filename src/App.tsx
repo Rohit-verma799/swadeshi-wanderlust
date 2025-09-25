@@ -14,6 +14,9 @@ import NotFound from "./pages/NotFound";
 import RoadMap from "./pages/roadMap";
 import  Ticket from "./pages/Ticket";
 import UserStay from "./pages/UserStay";
+import DetailedItinerary from "./pages/DetailedItinerary";
+import TourPage from "./pages/TourPage";
+import AgentDashboard from "./pages/AgentDashboard";  
 const queryClient = new QueryClient();
 
 const App = () => (

@@ -35,12 +35,12 @@ const SAMPLE_PLACES = {
 
 const JAIPUR_PLACES = {
     'Mansarovar': [
-        { type: 'Hotel', name: 'Mansarovar Grand', basePrice: 2200, image: 'https://source.unsplash.com/600x400/?Mansarovar,hotel' },
-        { type: 'Hotel', name: 'Hotel Mansarovar Palace', basePrice: 2400, image: 'https://source.unsplash.com/600x400/?Jaipur,hotel' },
-        { type: 'PG', name: 'Mansarovar PG Lodge', basePrice: 600, image: 'https://source.unsplash.com/600x400/?hostel,PG' },
-        { type: 'PG', name: 'Affordable PG Mansarovar', basePrice: 550, image: 'https://source.unsplash.com/600x400/?PG,room' },
-        { type: 'Home Kitchen', name: 'Mansarovar Home Kitchen', basePrice: 350, image: 'https://source.unsplash.com/600x400/?Indian,food' },
-        { type: 'Home Kitchen', name: 'Local Eats Mansarovar', basePrice: 300, image: 'https://source.unsplash.com/600x400/?home-cooked,food' }
+        { type: 'Hotel', name: 'Mansarovar Grand', basePrice: 1000, image: 'https://source.unsplash.com/600x400/?Mansarovar,hotel' },
+        { type: 'Hotel', name: 'Hotel Mansarovar Palace', basePrice: 1100, image: 'https://source.unsplash.com/600x400/?Jaipur,hotel' },
+        { type: 'PG', name: 'Mansarovar PG Lodge', basePrice: 6000, image: 'https://source.unsplash.com/600x400/?hostel,PG' },
+        { type: 'PG', name: 'Affordable PG Mansarovar', basePrice: 6500, image: 'https://source.unsplash.com/600x400/?PG,room' },
+        { type: 'Home Kitchen', name: 'Mansarovar Home Kitchen', basePrice: 3000, image: 'https://source.unsplash.com/600x400/?Indian,food' },
+        { type: 'Home Kitchen', name: 'Local Eats Mansarovar', basePrice: 3200, image: 'https://source.unsplash.com/600x400/?home-cooked,food' }
     ],
     'Haldighati': [
         { type: 'Hotel', name: 'Haldighati Retreat', basePrice: 1800, image: 'https://source.unsplash.com/600x400/?Haldighati,hotel' },
